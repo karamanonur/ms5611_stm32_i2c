@@ -1,9 +1,9 @@
-/**********************************************************************
+/******************************************************************************************
  * MS5611.c
  *
  * Created on: Dec 11, 2021
  * Author: Onur Karaman
-**********************************************************************/
+******************************************************************************************/
 
 #include "MS5611.h"
 #include "stm32f0xx_hal.h"
@@ -11,12 +11,12 @@
 
 I2C_HandleTypeDef hi2c1;
 
-/**********************************************************************
+/******************************************************************************************
  ;	Function: 		MS5611_Reset
- ;	Description: 	Reset MS5611
+ ;	Description: 		Reset MS5611
  ; 	Inputs: 		Nothing
  ;	Returns:		Nothing
-**********************************************************************/
+******************************************************************************************/
 static void MS5611_Reset(void)
 {
 	uint8_t I2C_COMMAND[1] = {0};
@@ -25,12 +25,12 @@ static void MS5611_Reset(void)
 	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), I2C_COMMAND, sizeof(I2C_COMMAND), 10);
 }
 
-/**********************************************************************
+/******************************************************************************************
  ;	Function: 		MS5611_ReadCalibrationData
- ;	Description: 	Read Calibration Parameters from MS5611
+ ;	Description: 		Read Calibration Parameters from MS5611
  ; 	Inputs: 		Nothing
  ;	Returns:		Nothing
-**********************************************************************/
+******************************************************************************************/
 static void MS5611_ReadCalibrationData(void)
 {
 	uint8_t rx_Buffer[2] = {0};
@@ -68,12 +68,12 @@ static void MS5611_ReadCalibrationData(void)
 	CalibrationParameters.C6 = ((rx_Buffer[0] << 8) | (rx_Buffer[1]));
 }
 
-/**********************************************************************
+/******************************************************************************************
  ;	Function: 		MS5611_ReadDigitalValues
- ;	Description: 	Read Pressure and Temperature values from MS5611
+ ;	Description: 		Read Pressure and Temperature values from MS5611
  ; 	Inputs: 		Sampling Rate
  ;	Returns:		Nothing
-**********************************************************************/
+******************************************************************************************/
 static void MS5611_ReadDigitalValues(int osr)
 {
 	uint8_t rx_Buffer[3] = {0};
@@ -179,12 +179,12 @@ static void MS5611_ReadDigitalValues(int osr)
 	}
 }
 
-/**********************************************************************
+/******************************************************************************************
  ;	Function: 		MS5611_DoCalculations
- ;	Description: 	Do Necessary Calculations
+ ;	Description: 		Do Necessary Calculations
  ; 	Inputs: 		Nothing
  ;	Returns:		Nothing
-**********************************************************************/
+******************************************************************************************/
 static void MS5611_DoCalculations(void)
 {
 	/* For dT, OFF, and SENS max and min values should be defined */
@@ -225,12 +225,12 @@ static void MS5611_DoCalculations(void)
 	CalculationParameters.P = ((DigitalValues.D1 * CalculationParameters.SENS / pow(2,21) - CalculationParameters.OFF)/ pow(2,15));
 }
 
-/**********************************************************************
+/******************************************************************************************
  ;	Function: 		MS5611_GetPressure
- ;	Description: 	Return Actual Pressure Value
+ ;	Description: 		Return Actual Pressure Value
  ; 	Inputs: 		Sampling Rate
  ;	Returns:		Actual Pressure Value
-**********************************************************************/
+******************************************************************************************/
 float MS5611_GetPressure(int osr)
 {
 	float actualPressure = 0;
@@ -243,12 +243,12 @@ float MS5611_GetPressure(int osr)
 	return actualPressure;
 }
 
-/**********************************************************************
+/******************************************************************************************
  ;	Function: 		MS5611_GetTemperature
- ;	Description: 	Return Actual Temperature Value
+ ;	Description: 		Return Actual Temperature Value
  ; 	Inputs: 		Sampling Rate
  ;	Returns:		Actual Temperature Value
-**********************************************************************/
+******************************************************************************************/
 float MS5611_GetTemperature(int osr)
 {
 	float actualTemperature = 0;
@@ -261,12 +261,12 @@ float MS5611_GetTemperature(int osr)
 	return actualTemperature;
 }
 
-/**********************************************************************
+/******************************************************************************************
  ;	Function: 		MS5611_Init
- ;	Description: 	Initialize MS5611
+ ;	Description: 		Initialize MS5611
  ; 	Inputs: 		Nothing
  ;	Returns:		Nothing
-**********************************************************************/
+******************************************************************************************/
 void MS5611_Init(void)
 {
 	MS5611_Reset();
