@@ -22,7 +22,7 @@ static void MS5611_Reset(void)
 	uint8_t I2C_COMMAND[1] = {0};
 	I2C_COMMAND[0] = MS5611_RESET;
 
-	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), I2C_COMMAND, sizeof(I2C_COMMAND), 10);
+	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), I2C_COMMAND, sizeof(I2C_COMMAND), HAL_MAX_DELAY);
 }
 
 /******************************************************************************************
@@ -43,28 +43,28 @@ static void MS5611_ReadCalibrationData(void)
 	I2C_COMMAND[4] = PROM_READ_C5;
 	I2C_COMMAND[5] = PROM_READ_C6;
 
-	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[0], sizeof(I2C_COMMAND[0]), 10);
-	HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[0], sizeof(I2C_COMMAND[0]), HAL_MAX_DELAY);
+	HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 	CalibrationParameters.C1 = ((rx_Buffer[0] << 8) | (rx_Buffer[1]));
 
-	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[1], sizeof(I2C_COMMAND[1]), 10);
-	HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[1], sizeof(I2C_COMMAND[1]), HAL_MAX_DELAY);
+	HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 	CalibrationParameters.C2 = ((rx_Buffer[0] << 8) | (rx_Buffer[1]));
 
-	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[2], sizeof(I2C_COMMAND[2]), 10);
-	HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[2], sizeof(I2C_COMMAND[2]), HAL_MAX_DELAY);
+	HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 	CalibrationParameters.C3 = ((rx_Buffer[0] << 8) | (rx_Buffer[1]));
 
-	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[3], sizeof(I2C_COMMAND[3]), 10);
-	HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[3], sizeof(I2C_COMMAND[3]), HAL_MAX_DELAY);
+	HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 	CalibrationParameters.C4 = ((rx_Buffer[0] << 8) | (rx_Buffer[1]));
 
-	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[4], sizeof(I2C_COMMAND[4]), 10);
-	HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[4], sizeof(I2C_COMMAND[4]), HAL_MAX_DELAY);
+	HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 	CalibrationParameters.C5 = ((rx_Buffer[0] << 8) | (rx_Buffer[1]));
 
-	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[5], sizeof(I2C_COMMAND[5]), 10);
-	HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+	HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[5], sizeof(I2C_COMMAND[5]), HAL_MAX_DELAY);
+	HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 	CalibrationParameters.C6 = ((rx_Buffer[0] << 8) | (rx_Buffer[1]));
 }
 
@@ -94,86 +94,86 @@ static void MS5611_ReadDigitalValues(int osr)
 	switch(osr)
 	{
 	case 256:
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[0], sizeof(I2C_COMMAND[0]), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[0], sizeof(I2C_COMMAND[0]), HAL_MAX_DELAY);
 		HAL_Delay(50);
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), 10);
-		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), HAL_MAX_DELAY);
+		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 		DigitalValues.D1 = ((rx_Buffer[0] << 16) | (rx_Buffer[1] << 8) | (rx_Buffer[2]));
 
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[5], sizeof(I2C_COMMAND[5]), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[5], sizeof(I2C_COMMAND[5]), HAL_MAX_DELAY);
 		HAL_Delay(50);
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), 10);
-		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), HAL_MAX_DELAY);
+		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 		DigitalValues.D2 = ((rx_Buffer[0] << 16) | (rx_Buffer[1] << 8) | (rx_Buffer[2]));
 		break;
 
 	case 512:
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[1], sizeof(I2C_COMMAND[1]), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[1], sizeof(I2C_COMMAND[1]), HAL_MAX_DELAY);
 		HAL_Delay(50);
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), 10);
-		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), HAL_MAX_DELAY);
+		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 		DigitalValues.D1 = ((rx_Buffer[0] << 16) | (rx_Buffer[1] << 8) | (rx_Buffer[2]));
 
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[6], sizeof(I2C_COMMAND[6]), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[6], sizeof(I2C_COMMAND[6]), HAL_MAX_DELAY);
 		HAL_Delay(50);
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), 10);
-		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), HAL_MAX_DELAY);
+		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 		DigitalValues.D2 = ((rx_Buffer[0] << 16) | (rx_Buffer[1] << 8) | (rx_Buffer[2]));
 		break;
 
 	case 1024:
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[2], sizeof(I2C_COMMAND[2]), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[2], sizeof(I2C_COMMAND[2]), HAL_MAX_DELAY);
 		HAL_Delay(50);
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), 10);
-		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), HAL_MAX_DELAY);
+		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 		DigitalValues.D1 = ((rx_Buffer[0] << 16) | (rx_Buffer[1] << 8) | (rx_Buffer[2]));
 
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[7], sizeof(I2C_COMMAND[7]), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[7], sizeof(I2C_COMMAND[7]), HAL_MAX_DELAY);
 		HAL_Delay(50);
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), 10);
-		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), HAL_MAX_DELAY);
+		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 		DigitalValues.D2 = ((rx_Buffer[0] << 16) | (rx_Buffer[1] << 8) | (rx_Buffer[2]));
 		break;
 
 	case 2048:
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[3], sizeof(I2C_COMMAND[3]), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[3], sizeof(I2C_COMMAND[3]), HAL_MAX_DELAY);
 		HAL_Delay(50);
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), 10);
-		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), HAL_MAX_DELAY);
+		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 		DigitalValues.D1 = ((rx_Buffer[0] << 16) | (rx_Buffer[1] << 8) | (rx_Buffer[2]));
 
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[8], sizeof(I2C_COMMAND[8]), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[8], sizeof(I2C_COMMAND[8]), HAL_MAX_DELAY);
 		HAL_Delay(50);
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), 10);
-		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), HAL_MAX_DELAY);
+		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 		DigitalValues.D2 = ((rx_Buffer[0] << 16) | (rx_Buffer[1] << 8) | (rx_Buffer[2]));
 		break;
 
 	case 4096:
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[4], sizeof(I2C_COMMAND[4]), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[4], sizeof(I2C_COMMAND[4]), HAL_MAX_DELAY);
 		HAL_Delay(50);
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), 10);
-		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), HAL_MAX_DELAY);
+		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 		DigitalValues.D1 = ((rx_Buffer[0] << 16) | (rx_Buffer[1] << 8) | (rx_Buffer[2]));
 
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[9], sizeof(I2C_COMMAND[9]), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[9], sizeof(I2C_COMMAND[9]), HAL_MAX_DELAY);
 		HAL_Delay(50);
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), 10);
-		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), HAL_MAX_DELAY);
+		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 		DigitalValues.D2 = ((rx_Buffer[0] << 16) | (rx_Buffer[1] << 8) | (rx_Buffer[2]));
 		break;
 
 	default:
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[2], sizeof(I2C_COMMAND[2]), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[2], sizeof(I2C_COMMAND[2]), HAL_MAX_DELAY);
 		HAL_Delay(50);
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), 10);
-		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), HAL_MAX_DELAY);
+		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 		DigitalValues.D1 = ((rx_Buffer[0] << 16) | (rx_Buffer[1] << 8) | (rx_Buffer[2]));
 
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[7], sizeof(I2C_COMMAND[7]), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[7], sizeof(I2C_COMMAND[7]), HAL_MAX_DELAY);
 		HAL_Delay(50);
-		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), 10);
-		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), 10);
+		HAL_I2C_Master_Transmit(&hi2c1, (MS5611_DEVICE_ADDR<<1), &I2C_COMMAND[10], sizeof(I2C_COMMAND[10]), HAL_MAX_DELAY);
+		HAL_I2C_Master_Receive(&hi2c1, (MS5611_DEVICE_ADDR<<1), rx_Buffer, sizeof(rx_Buffer), HAL_MAX_DELAY);
 		DigitalValues.D2 = ((rx_Buffer[0] << 16) | (rx_Buffer[1] << 8) | (rx_Buffer[2]));
 		break;
 	}
